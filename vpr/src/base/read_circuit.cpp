@@ -1,5 +1,6 @@
 #include "read_circuit.h"
 #include "read_blif.h"
+#include "read_edif.h"
 #include "read_interchange_netlist.h"
 #include "atom_netlist.h"
 #include "atom_netlist_utils.h"
@@ -36,18 +37,24 @@ AtomNetlist read_and_process_circuit(e_circuit_format circuit_format, t_vpr_setu
     bool verbosity = vpr_setup.NetlistOpts.netlist_verbosity;
 
     if (circuit_format == e_circuit_format::AUTO) {
-        auto name_ext = vtr::split_ext(circuit_file);
+           auto name_ext = vtr::split_ext(circuit_file);
 
-        VTR_LOGV(verbosity, "Circuit file: %s\n", circuit_file);
-        if (name_ext[1] == ".blif") {
-            circuit_format = e_circuit_format::BLIF;
-        } else if (name_ext[1] == ".eblif") {
-            circuit_format = e_circuit_format::EBLIF;
-        } else {
-            VPR_FATAL_ERROR(VPR_ERROR_ATOM_NETLIST, "Failed to determine file format for '%s' expected .blif or .eblif extension",
-                            circuit_file);
-        }
-    }
+           VTR_LOGV(verbosity, "Circuit file: %s\n", circuit_file);
+           if (name_ext[1] == ".blif") {
+               circuit_format = e_circuit_format::BLIF;
+           } else if (name_ext[1] == ".eblif") {
+               circuit_format = e_circuit_format::EBLIF;
+           } else if (name_ext[1] == ".v") {
+               circuit_format = e_circuit_format::VERILOG;
+           } else if (name_ext[1] == ".edn") {
+               circuit_format = e_circuit_format::EDIF;        // TODO
+           } else if (name_ext[1] == ".edif") {
+               circuit_format = e_circuit_format::EDIF;        // TODO
+           } else {
+               VPR_FATAL_ERROR(VPR_ERROR_ATOM_NETLIST, "Failed to determine file format for '%s' expected .blif or .eblif extension",
+                               circuit_file);
+           }
+       }
 
     AtomNetlist netlist;
     {
@@ -58,6 +65,8 @@ AtomNetlist read_and_process_circuit(e_circuit_format circuit_format, t_vpr_setu
             case e_circuit_format::EBLIF:
                 netlist = read_blif(circuit_format, circuit_file, user_models, library_models);
                 break;
+            case e_circuit_format::EDIF:
+            	read_edif();
             case e_circuit_format::FPGA_INTERCHANGE:
                 netlist = read_interchange_netlist(circuit_file, arch);
                 break;
