@@ -126,6 +126,9 @@ struct ParseCircuitFormat {
             conv_value.set_value("blif");
         else if (val == e_circuit_format::EBLIF)
             conv_value.set_value("eblif");
+
+        else if (val == e_circuit_format::EDIF)
+                    conv_value.set_value("edif");
         else {
             VTR_ASSERT(val == e_circuit_format::FPGA_INTERCHANGE);
             conv_value.set_value("fpga-interchange");

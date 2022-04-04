@@ -1,6 +1,7 @@
 #include "read_circuit.h"
 #include "read_blif.h"
-#include "read_edif.h"
+
+#include "edif_to_atomnetlist.h"
 #include "read_interchange_netlist.h"
 #include "atom_netlist.h"
 #include "atom_netlist_utils.h"
@@ -59,14 +60,20 @@ AtomNetlist read_and_process_circuit(e_circuit_format circuit_format, t_vpr_setu
     AtomNetlist netlist;
     {
         vtr::ScopedStartFinishTimer t("Load circuit");
+        // This vector is created to just check the working later it will be removed
+        std::vector<std::string> nets{"h2_c",
+                                              "h1_c"
+                                              "Ou_Carry"};
 
         switch (circuit_format) {
             case e_circuit_format::BLIF:
             case e_circuit_format::EBLIF:
                 netlist = read_blif(circuit_format, circuit_file, user_models, library_models);
                 break;
+                 
             case e_circuit_format::EDIF:
-            	read_edif();
+            	netlist = names(nets);
+                 break;
             case e_circuit_format::FPGA_INTERCHANGE:
                 netlist = read_interchange_netlist(circuit_file, arch);
                 break;
