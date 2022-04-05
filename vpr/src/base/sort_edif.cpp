@@ -1,4 +1,20 @@
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #include <assert.h>
 #include <stdio.h>
 #include <string>
@@ -12,7 +28,7 @@ class usefull_data
 {
   public:
   std::vector<std::pair<char* , char*>>ports_vec;
-  std::vector<char*>con_vec;
+  //std::vector<std::tuple< int, char* , char*>>con_vec;
   std::vector<std::pair<char*, std::vector<char*>>>nets_vec;
   struct Cell* read_thelinklist(struct SNode *head)
   {
@@ -40,6 +56,7 @@ class usefull_data
           current = current->next;
           if (current->type==0||current->type==5)
       		{
+             //list_depth=current->list_counter;
 				    current = current->next;
         		cmp_string = "rename";
 						input_string =  current->value;
@@ -54,8 +71,9 @@ class usefull_data
          else
          {
           n_cell->cell_name = current->value;
-         }
           printf ("\n   The cell is created with the name of %s", n_cell->cell_name);
+         }
+
           // Now we will iterate in the cell untill we reach the end of the cell
           int cell_iteration = list_depth-1 ;
           //   Entering the cell it will iterate untill the cell ends
@@ -90,54 +108,51 @@ class usefull_data
                     if (input_string == cmp_string)
                     {
                       current = current->next;
-
-                       Port *n_port = NULL;
-                        n_port = new Port;
-
+                      Port *n_port = NULL;
+                      n_port = new Port;
+                      printf("\n current type is %d",current->type);
+                      printf("\n port value = %s",current->value);
                      if (current->type==0||current->type==5)
       		              {
-				                    current = current->next;
-        		                cmp_string = "rename";
-						                input_string =  current->value;
-						                if (input_string == cmp_string)
-						                {
-						                  current = current->next;
+                          list_depth=current->list_counter;
+				                  current = current->next;
+        		              cmp_string = "array";
 
-                              n_cell->ports = n_port;
-                              n_port->port_name = current->value;
-                     // printf ("The port is : %s",n_port->port_name);
-                              current = current->next;
-                              current = current->next;
-                              current = current->next;
-                              current = current->next;
-                              current = current->next;
-                              n_port->port_dirt = current->value;
-						                 // printf ("\n   The port is renamed with the name of %s and its direction is %s ", n_port->port_name, n_port->port_dirt);
-						                }
+						              input_string =  current->value;
+						              if (input_string == cmp_string)
+						              {
+						                current = current->next;
+                            n_cell->ports = n_port;
+                            n_port->port_name = current->value;
+                            printf ("The port is : %s",n_port->port_name);
+                            current = current->next;
+                            current = current->next;
+                            current = current->next;
+                            current = current->next;
+                            current = current->next;
+                            n_port->port_dirt = current->value;
+						                printf ("\n   The port is renamed with the name of %s and its direction is %s ", n_port->port_name, n_port->port_dirt);
+						              }
                         }
-
-                      //printf ("\nThe Port is  %s ", current->value);
-                      else {
-
-                      n_cell->ports = n_port;
-                      n_port->port_name = current->value;
-                     // printf ("The port is : %s",n_port->port_name);
-                      current = current->next;
-                      current = current->next;
-                      current = current->next;
-                      n_port->port_dirt = current->value;
+                      else
+                      {
+                        n_cell->ports = n_port;
+                        n_port->port_name = current->value;
+                        // printf ("The port is : %s",n_port->port_name);
+                        current = current->next;
+                        current = current->next;
+                        current = current->next;
+                        n_port->port_dirt = current->value;
                       }
-                     // ports_vec.push_back (n_port->port_dirt);
-                      //printf ("\n %d", (ports_vec.size()));
-                       //ports_vec.push_back (n_port->port_dirt);
-                      // printf ("\n %d",(ports_vec.size()));
                       ports_vec.push_back (std::make_pair (n_port->port_name,n_port->port_dirt));
-                    //printf ("\nport is %s & Direction is %s ",ports_vec[0].first, ports_vec[0].second );
+
                       printf ("\n The port is : %s \n Direction is : %s",n_port->port_name,n_port->port_dirt);
                     } 
                   } 
                 }
               }
+
+              //   second section of contents
               cmp_string = "contents";
               if (input_string == cmp_string)
               {
@@ -150,49 +165,51 @@ class usefull_data
                   {
                     list_depth=current->list_counter;
                   }
+
                   if (current->type==2)
                   {
                     cmp_string = "instance";
                     input_string= current->value;
                      if (input_string == cmp_string)
                       {
+
+                        Instan *n_instan = NULL;
+                        n_instan = new Instan;
                         current = current->next;
-                        Instan *n_ins = NULL;
-                        n_ins = new Instan;
-                        if (current->type==0||current->type==5)
-      		              {
 
-				                  current = current->next;
-        		              cmp_string = "rename";
-						              input_string =  current->value;
-						              if (input_string == cmp_string)
-						              {
-						                current = current->next;
-						                n_ins->inst_name = current->value;
-						                printf ("\n   The cell is created with the name of %s", n_ins->inst_name);
-						              }
-                        }
-                        // A struct with the name cell is created
-                       else
-                       {
-                         n_ins->inst_name = current->value;
-
-                       }
-
-                       int instance_iteration = list_depth-1 ;
+                         if (current->type==0||current->type==5)
+      		                {
+                            //list_depth=current->list_counter;
+                           //F printf("\nentering the main oop the list depth is %d",list_depth );
+				                    current = current->next;
+        		                cmp_string = "rename";
+						                input_string =  current->value;
+						                if (input_string == cmp_string)
+						                {
+						                  current = current->next;
+						                  n_instan->inst_name = current->value;
+						                  printf ("\n\n\n\n\n  The instance is renamed with the name of %s", n_instan->inst_name);
+						                }
+                          }
+                        else
+                            {
+                              n_instan->inst_name = current->value;
+                              printf ("\n\n\n\n\n  The instance is created with the name of %s", n_instan->inst_name);
+                            }
+                           int instance_iteration = list_depth-1 ;
                             //   Entering the cell it will iterate untill the cell ends
                            while (list_depth>instance_iteration )
                             {
-                             printf("\nentering the while loop the list depth is %d    %d",list_depth ,instance_iteration);
-                             printf ("\ncurrent value %s",current->value);
+                             //printf("\nentering the while loop the list depth is %d",list_depth );
                               current = current->next;
                             if (current->type==0||current->type==5)
                               {
                                 list_depth=current->list_counter;
                               }
-                             if (current->type==2)
+
+                               if (current->type==2)
                                 {
-                                 printf ("\n %s",current->value);
+                                  //printf("\nThe value is the list depth is %s",current->value );
                                   cmp_string = "cellRef";
                                   input_string= current->value;
 
@@ -200,13 +217,13 @@ class usefull_data
 						                      {
                                     printf ("\nfound a cell ref ");
                                     current = current->next;
-                                    n_ins->inst_ref = current->value;
+                                    n_instan->inst_ref = current->value;
                                   }
                                   cmp_string = "property";
-
+                                  input_string= current->value;
                                   if (input_string == cmp_string)
 						                      {
-                                    printf("\n entering the property");
+                                    printf("\nentering the property");
                                     current = current->next;
                                     cmp_string = "LUT";
                                     input_string= current->value;
@@ -215,8 +232,8 @@ class usefull_data
                                       current = current->next;
                                       current = current->next;
                                       current = current->next;
-                                      n_ins->property_lut = current->value;
-                                      printf("\nThe lut property is %s",n_ins->property_lut);
+                                      n_instan->property_lut = current->value;
+                                      printf("The lut property is %s",n_instan->property_lut);
                                     }
                                     cmp_string = "WIDTH";
                                     if (input_string == cmp_string)
@@ -225,54 +242,89 @@ class usefull_data
                                       current = current->next;
                                       current = current->next;
                                       current = current->next;
-                                      n_ins->property_width = current->value;
-                                      printf("\nThe lut property is %s",n_ins->property_width);
+                                      n_instan->property_width = current->value;
+                                      printf("The width property is %s",n_instan->property_width);
                                     }
                                   }
                                 }
                               }
-                      }
-
-
+                            }
 
                     // getting the instances present in a cell
 
                     // creating my ports structure
+                    printf("\n\n\n\n\n\n\nexit the print instance" );
                     cmp_string = "net";
                     //input_string= current->value;
-                    struct Nets *n_net;
-                    n_net = new Nets;
-                    n_cell->nets = n_net;
-                    current = current->next;
-                    n_net->net_name = current->value;
-                    printf ("\n The net is  :  %s",n_net->net_name);
-                    int net_joining_iteration= list_depth-1;
-                    while (list_depth>net_joining_iteration )
+                    if (input_string == cmp_string)
                     {
+                      struct Nets *n_net;
+                      n_net = new Nets;
+                      n_cell->nets = n_net;
                       current = current->next;
-                      if (current->type==0||current->type==5)
+                      n_net->net_name = current->value;
+                      printf ("\n The net is  :  %s",n_net->net_name);
+                      int net_joining_iteration= list_depth-1;
+                      while (list_depth>net_joining_iteration )
                       {
-                        list_depth=current->list_counter;
-                      }
-                      if (current->type==2)
-                      {
-                        cmp_string = "portRef";
-                        input_string = current->value;
-                        if (input_string == cmp_string)
+                        current = current->next;
+                        if (current->type==0||current->type==5)
                         {
-                          current = current->next;
-                          n_net->start_net=current->value;
-                          con_vec.push_back (n_net->start_net);
-                          printf ("\nThe net is starting from: %s",current->value );
-                          current = current->next;
-                          current = current->next;
-                          current = current->next;
-                          current = current->next;
-                          n_net->end_net=current->value;
-                          con_vec.push_back (n_net->end_net);
-                          nets_vec.push_back (std::make_pair (n_net->net_name,con_vec));
-                          printf ("\nThe net ends at reference is: %s",current->value );
-                        }                
+                          list_depth=current->list_counter;
+                          printf("\n The updated iteration is %d",list_depth );
+                        }
+                        if (current->type==2)
+                        {
+                          cmp_string = "portRef";
+                          input_string = current->value;
+                          if (input_string == cmp_string)
+                          {
+                            current = current->next;
+                            if (current->type==0||current->type==5)
+                            {
+                              current = current->next;
+                              cmp_string = "member";
+                              input_string = current->value;
+                              if (input_string == cmp_string)
+                              {
+                                current = current->next;
+                                n_net->start_net=current->value;
+                                current = current->next;
+                                n_net->member_num=current->value;
+                              }
+
+                            }
+                            else
+                            {
+                              n_net->start_net=current->value;
+                              //n_net->member_num=0;
+                            }
+                            int instance_ref_iteration= list_depth-1;
+
+
+                            while (list_depth>instance_ref_iteration )
+                            {
+                              current = current->next;
+                              if (current->type==0||current->type==5)
+                              {
+                                list_depth=current->list_counter;
+                                printf("\n The updated iteration is %d",list_depth );
+                              }
+                              if (current->type==2)
+                              {
+                                cmp_string = "instanceRef";
+                                input_string = current->value;
+                                if (input_string == cmp_string)
+                                {
+                                  current = current->next;
+                                  printf("\ninstance ref found %s",current->value );
+                                }
+
+                              }
+                            }
+
+                          }
+                        }
                       }
                     }
                   }

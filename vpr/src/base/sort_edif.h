@@ -4,6 +4,7 @@ struct Nets{
 char *net_name;
 char *start_net;
 char *end_net;
+char *member_num;
 
 };
 
