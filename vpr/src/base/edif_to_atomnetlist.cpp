@@ -39,7 +39,9 @@ AtomNetlist names(std::vector<std::string> nets) {
 	 struct SNode *node = snode_parse(fp);
 
 	 usefull_data u1;
-	 struct Cell *cell_ = (u1.read_thelinklist (node));
+	 char* top_cell = (u1.find_top_(node));
+
+	 struct Cell *cell_ = (u1.read_thelinklist (node, top_cell));
 	 int i=0;
 
 
