@@ -43,6 +43,22 @@ AtomNetlist names(std::vector<std::string> nets) {
 
 	 struct Cell *cell_ = (u1.read_thelinklist (node, top_cell));
 	 int i=0;
+	 for (i=0; i<u1.ports_vec.size(); i++)
+	 {
+	 printf ("\nport is %s & Direction is %s ",u1.ports_vec[i].first, u1.ports_vec[i].second );
+	 }
+
+
+	 for ( i=0; i<u1.nets_vec.size(); i++)
+	 {
+	   printf (" \n the net is %s",u1.nets_vec[i].first);
+	 }
+
+	 for(int k =0; k<u1.con_vec.size(); k++)
+	   {
+	     printf("\n\n\n NET NAME IS : %s \n PORT NAME IS : %s \n PIN NUMBER IS : %s \n INSTANCE NAME IS %s",std::get<0>(u1.con_vec[k]), std::get<1>(u1.con_vec[k]), std::get<2>(u1.con_vec[k]), std::get<3>(u1.con_vec[k]) );
+	     }
+	 int i=0;
 
 
 	 for (i=0; i<u1.ports_vec.size(); i++)

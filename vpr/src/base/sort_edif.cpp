@@ -3,8 +3,10 @@
 #include <stdio.h>
 #include <string>
 #include <vector>
+#include <tuple>
 #include <iostream>
-
+#include <map>
+#include <bits/stdc++.h>
 #include "read_edif.cpp"
 #include "sort_edif.h"
 
@@ -12,8 +14,9 @@ class usefull_data
 {
   public:
   std::vector<std::pair<char* , char*>>ports_vec;
-  typedef std::vector<std::tuple< int, char* , char*>>con_vec;
+  std::vector<std::tuple< char*, char* , char*, char*>>con_vec;
   std::vector<std::pair<char*, std::vector<char*>>>nets_vec;
+  //std::map<char*, std::vector<std::tuple<  char* , char*, char*>>> nets;
 
 std::string top_cell;
   std::vector<Cell>cell_vec;
@@ -278,6 +281,8 @@ std::string top_cell;
                        {
                         n_net->net_name = current->value;
                        }
+
+                      char *net_name_repeat= n_net->net_name;
                       printf ("\n The net is  :  %s",n_net->net_name);
                       int net_joining_iteration= list_depth-1;
                       while (list_depth>net_joining_iteration )
@@ -302,19 +307,24 @@ std::string top_cell;
                               if (input_string == cmp_string)
                               {
                                 current = current->next;
-                                n_net->start_net=current->value;
-                                printf ("\n The port joining with net is  :  %s",n_net->start_net);
+                                n_net->port_ref=current->value;
+                                printf ("\n The port ref is  :  %s",n_net->port_ref);
                                 current = current->next;
                                 n_net->member_num=current->value;
+                                printf ("\n The member is  :  %s",n_net->member_num);
                               }
                             }
                             else
                             {
-                              n_net->start_net=current->value;
-                              printf ("\n The port joining with net is  :  %s",n_net->start_net);
-                              n_net->member_num="0";
+                              n_net->port_ref=current->value;
+                              printf ("\n The port refis  :  %s",n_net->port_ref);
+                              char *No_mem= "0";
+                             n_net->member_num=No_mem;
+                               printf ("\n The member is  :  %s",n_net->member_num);
                             }
                             int instance_ref_iteration= list_depth-1;
+                            //bool instance_ref = false;
+                            n_net->instance_ref=n_cell->cell_name;
                             while (list_depth>instance_ref_iteration )
                             {
                               current = current->next;
@@ -329,13 +339,22 @@ std::string top_cell;
                                 if (input_string == cmp_string)
                                 {
                                   current = current->next;
-                                  printf("\ninstance is updated to %s",current->value );
+                                  //instance_ref= true;
+                                  n_net->instance_ref=current->value;
+                                  printf("\ninstance ref is  %s",n_net->instance_ref );
+
                                 }
                               }
                             }
+                            con_vec.push_back(std::make_tuple (net_name_repeat,n_net->port_ref, n_net->member_num, n_net->instance_ref));
+
                           }
+
                         }
+
+
                       }
+
                     }
                   }
                 }
